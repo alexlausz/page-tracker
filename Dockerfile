@@ -2,6 +2,9 @@
 
 FROM python:3.11.2-slim-bullseye AS builder
 
+ENV http_proxy="http://192.168.3.175:7890"
+ENV https_proxy="http://192.168.3.175:7890"
+
 RUN apt-get update && \
  apt-get upgrade --yes
 
@@ -44,6 +47,9 @@ RUN python3 -m venv $VIRTUALENV
 ENV PATH="$VIRTUALENV/bin:$PATH"
 
 COPY --from=builder /home/realpython/dist/page_tracker*.whl /home/realpython
+
+ENV http_proxy="http://192.168.3.175:7890"
+ENV https_proxy="http://192.168.3.175:7890"
 
 RUN python -m pip install --upgrade pip setuptools && \
     python -m pip install --no-cache-dir page_tracker*.whl
